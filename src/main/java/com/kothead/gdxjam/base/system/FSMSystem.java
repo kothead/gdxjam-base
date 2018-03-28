@@ -1,10 +1,10 @@
-package com.kothead.gdxjam.base.controller.system;
+package com.kothead.gdxjam.base.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.fsm.StateMachine;
-import com.kothead.gdxjam.base.model.component.FSMComponent;
+import com.kothead.gdxjam.base.component.FSMComponent;
 
 public class FSMSystem extends IteratingSystem {
 

@@ -1,11 +1,11 @@
-package com.kothead.gdxjam.base.controller.system;
+package com.kothead.gdxjam.base.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
-import com.kothead.gdxjam.base.model.component.PositionComponent;
-import com.kothead.gdxjam.base.model.component.VelocityComponent;
+import com.kothead.gdxjam.base.component.PositionComponent;
+import com.kothead.gdxjam.base.component.VelocityComponent;
 
 public class MovementSystem extends IteratingSystem {
 

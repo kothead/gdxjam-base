@@ -1,4 +1,4 @@
-package com.kothead.gdxjam.base.controller.system;
+package com.kothead.gdxjam.base.system;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.kothead.gdxjam.base.data.Mappers;
-import com.kothead.gdxjam.base.model.component.FollowCameraComponent;
-import com.kothead.gdxjam.base.model.component.PositionComponent;
-import com.kothead.gdxjam.base.model.component.SpriteComponent;
+import com.kothead.gdxjam.base.component.FollowCameraComponent;
+import com.kothead.gdxjam.base.component.PositionComponent;
+import com.kothead.gdxjam.base.component.SpriteComponent;
 
 public class CameraControlSystem extends EntitySystem {
 

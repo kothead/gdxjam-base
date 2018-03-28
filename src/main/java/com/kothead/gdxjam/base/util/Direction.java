@@ -1,4 +1,4 @@
-package com.kothead.gdxjam.base.model;
+package com.kothead.gdxjam.base.util;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;

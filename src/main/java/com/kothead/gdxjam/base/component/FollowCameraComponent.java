@@ -1,4 +1,4 @@
-package com.kothead.gdxjam.base.model.component;
+package com.kothead.gdxjam.base.component;
 
 import com.badlogic.ashley.core.Component;
 

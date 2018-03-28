@@ -1,4 +1,4 @@
-package com.kothead.gdxjam.base.controller.system;
+package com.kothead.gdxjam.base.system;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -8,8 +8,8 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.kothead.gdxjam.base.model.component.DebugComponent;
-import com.kothead.gdxjam.base.model.component.PositionComponent;
+import com.kothead.gdxjam.base.component.DebugComponent;
+import com.kothead.gdxjam.base.component.PositionComponent;
 
 public class DebugRenderSystem extends EntitySystem {
 
