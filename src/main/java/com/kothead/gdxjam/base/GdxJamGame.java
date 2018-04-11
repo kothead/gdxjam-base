@@ -3,17 +3,17 @@ package com.kothead.gdxjam.base;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.fsm.StackStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.assets.AssetManager;
+import com.kothead.gdxjam.base.context.Context;
 import com.kothead.gdxjam.base.data.GdxJamConfiguration;
 
 public class GdxJamGame extends Game {
 
     private GdxJamConfiguration configuration;
-    private StateMachine<GdxJamGame, ? extends State<GdxJamGame>> stateMachine;
+    private StateMachine<GdxJamGame, Context> stateMachine;
     private AssetManager assetManager;
     private Engine engine;
 
@@ -23,7 +23,7 @@ public class GdxJamGame extends Game {
 
     @Override
     public void create() {
-        stateMachine = new DefaultStateMachine<>(this);
+        stateMachine = new StackStateMachine<>(this);
         assetManager = new AssetManager();
         engine = new Engine();
         Gdx.input.setCatchBackKey(true);
@@ -33,20 +33,6 @@ public class GdxJamGame extends Game {
     public void render() {
         super.render();
         stateMachine.update();
-    }
-
-    @Override
-    public void dispose() {
-        Screen screen = getScreen();
-        if (screen != null) screen.dispose();
-        super.dispose();
-    }
-
-    @Override
-    public void setScreen(Screen screen) {
-        Screen old = getScreen();
-        super.setScreen(screen);
-        if (old != null) old.dispose();
     }
 
     public GdxJamConfiguration getConfiguration() {
@@ -59,5 +45,9 @@ public class GdxJamGame extends Game {
 
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    public StateMachine<GdxJamGame, Context> getStateMachine() {
+        return stateMachine;
     }
 }
