@@ -12,12 +12,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.kothead.gdxjam.base.util.Direction;
+import com.kothead.gdxjam.base.util.TextureAnimation;
 
-public class AnimationLoader extends AsynchronousAssetLoader<Animation<TextureRegion>, AnimationLoader.AnimationParameter> {
+public class TextureAnimationLoader extends AsynchronousAssetLoader<TextureAnimation, TextureAnimationLoader.AnimationParameter> {
 
     private Builder builder;
 
-    public AnimationLoader(FileHandleResolver resolver) {
+    public TextureAnimationLoader(FileHandleResolver resolver) {
         super(resolver);
     }
 
@@ -27,8 +28,8 @@ public class AnimationLoader extends AsynchronousAssetLoader<Animation<TextureRe
     }
 
     @Override
-    public Animation<TextureRegion> loadSync(AssetManager manager, String fileName, FileHandle file, AnimationParameter parameter) {
-        Animation<TextureRegion> animation = builder.build(manager);
+    public TextureAnimation loadSync(AssetManager manager, String fileName, FileHandle file, AnimationParameter parameter) {
+        TextureAnimation animation = builder.build(manager);
         builder = null;
         return animation;
     }
@@ -41,7 +42,7 @@ public class AnimationLoader extends AsynchronousAssetLoader<Animation<TextureRe
         return dependencies;
     }
 
-    public static class AnimationParameter extends AssetLoaderParameters<Animation<TextureRegion>> {
+    public static class AnimationParameter extends AssetLoaderParameters<TextureAnimation> {
     }
 
     private static class Builder {
@@ -92,7 +93,7 @@ public class AnimationLoader extends AsynchronousAssetLoader<Animation<TextureRe
             return this;
         }
 
-        public Animation<TextureRegion> build(AssetManager manager) {
+        public TextureAnimation build(AssetManager manager) {
             Array<TextureRegion> regions = new Array<>();
             TextureAtlas atlas = manager.get(atlasName);
             for (int i = 0; i < count; i++) {
@@ -103,7 +104,7 @@ public class AnimationLoader extends AsynchronousAssetLoader<Animation<TextureRe
                 }
                 regions.add(region);
             }
-            return new Animation<>(duration, regions, mode);
+            return new TextureAnimation(duration, regions, mode);
         }
     }
 }
