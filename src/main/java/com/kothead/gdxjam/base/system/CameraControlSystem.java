@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.kothead.gdxjam.base.data.Mappers;
 import com.kothead.gdxjam.base.component.FollowCameraComponent;
 import com.kothead.gdxjam.base.component.PositionComponent;
 import com.kothead.gdxjam.base.component.SpriteComponent;
@@ -52,7 +51,7 @@ public class CameraControlSystem extends EntitySystem {
         Vector2 position = PositionComponent.mapper.get(entity).position;
         Vector2 size = new Vector2();
         if (SpriteComponent.mapper.has(entity)) {
-            Sprite sprite = Mappers.sprite.get(entity).sprite;
+            Sprite sprite = SpriteComponent.mapper.get(entity).sprite;
             size.x = sprite.getX();
             size.y = sprite.getY();
         }

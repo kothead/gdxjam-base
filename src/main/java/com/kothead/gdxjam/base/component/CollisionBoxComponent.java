@@ -3,7 +3,6 @@ package com.kothead.gdxjam.base.component;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.math.Polygon;
-import com.kothead.gdxjam.base.data.CollisionBoxes;
 
 public class CollisionBoxComponent implements Component {
 
