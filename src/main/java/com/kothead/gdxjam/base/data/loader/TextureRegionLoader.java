@@ -51,5 +51,15 @@ public class TextureRegionLoader extends AsynchronousAssetLoader<TextureRegion, 
         public String atlasName;
         public String frameName;
         public Integer index;
+
+        public TextureRegionParameter(String atlasName, String frameName) {
+            this.atlasName = atlasName;
+            this.frameName = frameName;
+        }
+
+        public TextureRegionParameter(String atlasName, String frameName, int index) {
+            this(atlasName, frameName);
+            this.index = index;
+        }
     }
 }
