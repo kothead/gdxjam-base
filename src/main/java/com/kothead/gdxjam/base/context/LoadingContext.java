@@ -8,8 +8,8 @@ import com.kothead.gdxjam.base.screen.ScreenBuilder;
 
 public class LoadingContext extends ContextProxy {
 
-    private AssetDescriptor[] descriptors;
     private ScreenBuilder<? extends LoadingProgressListener> builder;
+    private AssetDescriptor[] descriptors;
     private boolean isLoading;
     private Array<String> assetsToUnload;
 
@@ -18,9 +18,10 @@ public class LoadingContext extends ContextProxy {
     }
 
     public LoadingContext(Context context,
-                          AssetDescriptor[] descriptors,
-                          ScreenBuilder<? extends LoadingProgressListener> builder) {
+                          ScreenBuilder<? extends LoadingProgressListener> builder,
+                          AssetDescriptor... descriptors) {
         super(context);
+        this.builder = builder;
         this.descriptors = descriptors;
     }
 
