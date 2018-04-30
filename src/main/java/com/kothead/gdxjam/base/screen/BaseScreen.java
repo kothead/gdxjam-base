@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -71,6 +72,10 @@ public abstract class BaseScreen extends ScreenAdapter {
 
     public ShapeRenderer shapes() {
         return shapes;
+    }
+
+    public AssetManager assets() {
+        return getGame().getAssetManager();
     }
 
     public Stage stage() {
