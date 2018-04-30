@@ -56,6 +56,12 @@ public class TextureAnimationLoader extends AsynchronousAssetLoader<TextureAnima
         private boolean flipx = false;
         private boolean flipy = false;
 
+        /**
+         * No-arg constructor for serialization
+         */
+        public Builder() {
+        }
+
         public Builder(String atlasName, String frameName) {
             this.atlasName = atlasName;
             this.frameName = frameName;
