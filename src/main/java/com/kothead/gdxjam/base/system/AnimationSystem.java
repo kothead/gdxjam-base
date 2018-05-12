@@ -23,6 +23,7 @@ public class AnimationSystem extends IteratingSystem {
         SpriteComponent spriteComponent = SpriteComponent.mapper.get(entity);
         if (spriteComponent != null) {
             spriteComponent.sprite.setRegion(region);
+            spriteComponent.sprite.setSize(region.getRegionWidth(), region.getRegionHeight());
         } else {
             entity.add(new SpriteComponent(new Sprite(region)));
         }

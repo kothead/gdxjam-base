@@ -50,6 +50,7 @@ public class GdxJamGame extends Game {
     public void render() {
         super.render();
         stateMachine.update();
+        engine.update(Gdx.graphics.getDeltaTime());
     }
 
     public GdxJamConfiguration getConfiguration() {
