@@ -11,16 +11,20 @@ import com.kothead.gdxjam.base.component.SpriteComponent;
 public class AnimationSystem extends IteratingSystem {
 
     public AnimationSystem(int priority) {
-        super(Family.all(SpriteComponent.class, AnimationComponent.class).get(), priority);
+        super(Family.all(AnimationComponent.class).get(), priority);
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        Sprite sprite = SpriteComponent.mapper.get(entity).sprite;
         AnimationComponent animationComponent = AnimationComponent.mapper.get(entity);
         animationComponent.time += deltaTime;
 
         TextureRegion region = animationComponent.animation.getKeyFrame(animationComponent.time);
-        sprite.setRegion(region);
+        SpriteComponent spriteComponent = SpriteComponent.mapper.get(entity);
+        if (spriteComponent != null) {
+            spriteComponent.sprite.setRegion(region);
+        } else {
+            entity.add(new SpriteComponent(new Sprite(region)));
+        }
     }
 }
