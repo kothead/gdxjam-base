@@ -48,9 +48,9 @@ public class GdxJamGame extends Game {
 
     @Override
     public void render() {
-        super.render();
-        stateMachine.update();
-        engine.update(Gdx.graphics.getDeltaTime());
+        stateMachine.update();                      // sets current screen
+        super.render();                             // render background of current screen
+        engine.update(Gdx.graphics.getDeltaTime()); // rendering of game objects happens here
     }
 
     public GdxJamConfiguration getConfiguration() {
