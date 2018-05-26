@@ -11,17 +11,16 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.kothead.gdxjam.base.component.DebugComponent;
 import com.kothead.gdxjam.base.component.PositionComponent;
+import com.kothead.gdxjam.base.screen.BaseScreen;
 
 public class DebugRenderSystem extends EntitySystem {
 
-    private Camera camera;
-    private ShapeRenderer renderer;
+    private BaseScreen screen;
     private ImmutableArray<Entity> entities;
 
-    public DebugRenderSystem(int priority, Camera camera, ShapeRenderer renderer) {
+    public DebugRenderSystem(int priority, BaseScreen screen) {
         super(priority);
-        this.camera = camera;
-        this.renderer = renderer;
+        this.screen = screen;
     }
 
     @Override
@@ -34,15 +33,18 @@ public class DebugRenderSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        renderer.begin(ShapeRenderer.ShapeType.Line);
+        ShapeRenderer shapes = screen.shapes();
+        Camera camera = screen.getCamera();
+
+        shapes.begin(ShapeRenderer.ShapeType.Line);
         for (Entity entity: entities) {
             Polygon polygon = DebugComponent.mapper.get(entity).polygon;
             Vector2 position = PositionComponent.mapper.get(entity).position;
             polygon = new Polygon(polygon.getVertices());
-            polygon.translate(position.x - camera.position.x,
-                    position.y - camera.position.y);
-            renderer.polygon(polygon.getTransformedVertices());
+            polygon.translate(position.x - camera.position.x + screen.getWorldWidth() / 2.0f,
+                    position.y - camera.position.y + screen.getWorldHeight() / 2.0f);
+            shapes.polygon(polygon.getTransformedVertices());
         }
-        renderer.end();
+        shapes.end();
     }
 }
