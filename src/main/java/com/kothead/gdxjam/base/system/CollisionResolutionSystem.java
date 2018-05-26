@@ -1,5 +1,6 @@
 package com.kothead.gdxjam.base.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -16,11 +17,23 @@ import com.kothead.gdxjam.base.component.VelocityComponent;
 public abstract class CollisionResolutionSystem extends IteratingSystem {
 
     private Family family;
+    private ComponentMapper<? extends CollisionBoxComponent> firstMapper;
+    private ComponentMapper<? extends CollisionBoxComponent> secondMapper;
     private ImmutableArray<Entity> entities;
 
-    public CollisionResolutionSystem(int priority, Family first, Family second) {
-        super(first, priority);
-        family = second;
+    public CollisionResolutionSystem(int priority, Family firstFamily, Family secondFamily) {
+        this(priority, firstFamily, secondFamily,
+                CollisionBoxComponent.mapper, CollisionBoxComponent.mapper);
+    }
+
+    public CollisionResolutionSystem(int priority,
+                                     Family firstFamily, Family secondFamily,
+                                     ComponentMapper<? extends CollisionBoxComponent> firstMapper,
+                                     ComponentMapper<? extends CollisionBoxComponent> secondMapper) {
+        super(firstFamily, priority);
+        family = secondFamily;
+        this.firstMapper = firstMapper;
+        this.secondMapper = secondMapper;
     }
 
     protected abstract void onCollisionResolution(Entity entity, Vector2 correction);
@@ -33,25 +46,27 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity first, float deltaTime) {
-        if (!CollisionBoxComponent.mapper.has(first)) return;
+        if (!firstMapper.has(first)) return;
 
         Vector2 position = PositionComponent.mapper.get(first).position;
         Vector2 velocity = VelocityComponent.mapper.get(first).velocity;
         Vector2 correction = new Vector2();
 
         for (Entity second: entities) {
-            if (first == second || !CollisionBoxComponent.mapper.has(second)) continue;
+            if (first == second || !secondMapper.has(second)) continue;
 
-            handleContact(getCollisionBox(first), getCollisionBox(second),
+            handleContact(getCollisionBox(first, firstMapper),
+                    getCollisionBox(second, secondMapper),
                     position, velocity, correction);
         }
 
         if (!correction.isZero()) onCollisionResolution(first, correction);
     }
 
-    private Polygon getCollisionBox(Entity entity) {
+    private Polygon getCollisionBox(Entity entity,
+                                    ComponentMapper<? extends CollisionBoxComponent> mapper) {
         Vector2 position = PositionComponent.mapper.get(entity).position;
-        Polygon collisionBox = CollisionBoxComponent.mapper.get(entity).collisionBox;
+        Polygon collisionBox = mapper.get(entity).collisionBox;
         collisionBox = new Polygon(collisionBox.getTransformedVertices());
         collisionBox.translate(position.x, position.y);
         return collisionBox;
