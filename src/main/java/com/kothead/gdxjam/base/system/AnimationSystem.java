@@ -22,8 +22,13 @@ public class AnimationSystem extends IteratingSystem {
         TextureRegion region = animationComponent.animation.getKeyFrame(animationComponent.time);
         SpriteComponent spriteComponent = SpriteComponent.mapper.get(entity);
         if (spriteComponent != null) {
-            spriteComponent.sprite.setRegion(region);
-            spriteComponent.sprite.setSize(region.getRegionWidth(), region.getRegionHeight());
+            Sprite sprite = spriteComponent.sprite;
+            boolean flipX = sprite.isFlipX();
+            boolean flipY = sprite.isFlipY();
+
+            sprite.setRegion(region);
+            sprite.setSize(region.getRegionWidth(), region.getRegionHeight());
+            sprite.flip(flipX, flipY);
         } else {
             entity.add(new SpriteComponent(new Sprite(region)));
         }
