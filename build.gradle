@@ -8,6 +8,7 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: "java-library"
+apply plugin: "maven-publish"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -38,4 +39,16 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives sourcesJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId "com.github.kothead"
+            version "master-SNAPSHOT"
+            from components.java
+
+            artifact sourcesJar
+        }
+    }
 }
