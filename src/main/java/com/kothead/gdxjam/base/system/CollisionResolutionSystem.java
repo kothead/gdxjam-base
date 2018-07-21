@@ -36,7 +36,9 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
         this.secondMapper = secondMapper;
     }
 
-    protected abstract void onCollisionResolution(Entity entity, Vector2 correction);
+    protected abstract void onCollisionResolution(Entity entity,
+                                                  Vector2 positionCorrection,
+                                                  Vector2 velocityCorrection);
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -50,17 +52,19 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
 
         Vector2 position = PositionComponent.mapper.get(first).position;
         Vector2 velocity = VelocityComponent.mapper.get(first).velocity;
-        Vector2 correction = new Vector2();
+        Vector2 positionCorrection = new Vector2();
+        Vector2 velocityCorrection = new Vector2(velocity);
 
         for (Entity second: entities) {
             if (first == second || !secondMapper.has(second)) continue;
 
             handleContact(getCollisionBox(first, firstMapper),
                     getCollisionBox(second, secondMapper),
-                    position, velocity, correction);
+                    position, velocity, positionCorrection);
         }
 
-        if (!correction.isZero()) onCollisionResolution(first, correction);
+        velocityCorrection.sub(velocity);
+        if (!positionCorrection.isZero()) onCollisionResolution(first, positionCorrection, velocityCorrection);
     }
 
     private Polygon getCollisionBox(Entity entity,
