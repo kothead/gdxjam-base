@@ -40,6 +40,10 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
                                                   Vector2 positionCorrection,
                                                   Vector2 velocityCorrection);
 
+    protected abstract void onCollisionDetection(Entity first, Entity second,
+                                                 Vector2 positionCorrection,
+                                                 Vector2 velocityCorrection);
+
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
@@ -58,13 +62,31 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
         for (Entity second: entities) {
             if (first == second || !secondMapper.has(second)) continue;
 
-            handleContact(getCollisionBox(first, firstMapper),
-                    getCollisionBox(second, secondMapper),
-                    position, velocity, positionCorrection);
+            handleContact(first, second, position, velocity, positionCorrection);
         }
 
         velocityCorrection.sub(velocity);
         if (!positionCorrection.isZero()) onCollisionResolution(first, positionCorrection, velocityCorrection);
+    }
+
+    private void handleContact(Entity entity1, Entity entity2,
+                               Vector2 position, Vector2 velocity,
+                               Vector2 correction) {
+        Vector2 positionCorrection = new Vector2();
+        Vector2 velocityCorrection = new Vector2();
+        handleContact(
+                getCollisionBox(entity1, firstMapper),
+                getCollisionBox(entity2, secondMapper),
+                position, velocity, correction,
+                positionCorrection, velocityCorrection
+        );
+        correction.add(positionCorrection);
+        if (!positionCorrection.isZero()) {
+            onCollisionDetection(
+                    entity1, entity2,
+                    positionCorrection, velocityCorrection
+            );
+        }
     }
 
     private Polygon getCollisionBox(Entity entity,
@@ -82,11 +104,13 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
      * @param polygon2 collision box of second object
      * @param position of first object
      * @param velocity of first object
-     * @param correction of collision translations
+     * @param correction of all collision translations
+     * @param positionCorrection of this specific collision
+     * @param velocityCorrection of this specific collision
      */
     private void handleContact(Polygon polygon1, Polygon polygon2,
-                                  Vector2 position, Vector2 velocity,
-                                  Vector2 correction) {
+                                  Vector2 position, Vector2 velocity, Vector2 correction,
+                                  Vector2 positionCorrection, Vector2 velocityCorrection) {
         Intersector.MinimumTranslationVector translation = new Intersector.MinimumTranslationVector();
         Intersector.overlapConvexPolygons(polygon1, polygon2, translation);
         if (translation.normal.isZero()) return;
@@ -94,18 +118,19 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
         float projection = correction.dot(translation.normal);
 
         float difference = translation.depth - projection;
-        Vector2 compensation = new Vector2(
+        positionCorrection.set(
                 translation.normal.x * difference,
-                translation.normal.y * difference);
-        correction.add(compensation);
-        position.add(compensation);
+                translation.normal.y * difference
+        );
+        position.add(positionCorrection);
 
         projection = velocity.dot(translation.normal);
         if (projection < 0) {
-            compensation = new Vector2(
+            velocityCorrection.set(
                     translation.normal.x * projection,
-                    translation.normal.y * projection);
-            velocity.sub(compensation);
+                    translation.normal.y * projection
+            );
+            velocity.sub(velocityCorrection);
         }
     }
 }
