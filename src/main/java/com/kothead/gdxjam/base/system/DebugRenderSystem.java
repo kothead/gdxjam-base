@@ -8,7 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.kothead.gdxjam.base.component.DebugComponent;
 import com.kothead.gdxjam.base.component.PositionComponent;
 import com.kothead.gdxjam.base.screen.BaseScreen;
@@ -39,7 +39,7 @@ public class DebugRenderSystem extends EntitySystem {
         shapes.begin(ShapeRenderer.ShapeType.Line);
         for (Entity entity: entities) {
             Polygon polygon = DebugComponent.mapper.get(entity).polygon;
-            Vector2 position = PositionComponent.mapper.get(entity).position;
+            Vector3 position = PositionComponent.mapper.get(entity).position;
             polygon = new Polygon(polygon.getVertices());
             polygon.translate(position.x - camera.position.x + screen.getWorldWidth() / 2.0f,
                     position.y - camera.position.y + screen.getWorldHeight() / 2.0f);

@@ -8,7 +8,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.kothead.gdxjam.base.component.CollisionBoxComponent;
 import com.kothead.gdxjam.base.component.PositionComponent;
 
@@ -58,7 +58,7 @@ public abstract class CollisionDetectionSystem extends IteratingSystem {
 
     private Polygon getCollisionBox(Entity entity,
                                     ComponentMapper<? extends CollisionBoxComponent> mapper) {
-        Vector2 position = PositionComponent.mapper.get(entity).position;
+        Vector3 position = PositionComponent.mapper.get(entity).position;
         Polygon collisionBox = mapper.get(entity).collisionBox;
         collisionBox = new Polygon(collisionBox.getTransformedVertices());
         collisionBox.translate(position.x, position.y);

@@ -9,6 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.kothead.gdxjam.base.component.CollisionBoxComponent;
 import com.kothead.gdxjam.base.component.PositionComponent;
 import com.kothead.gdxjam.base.component.VelocityComponent;
@@ -54,7 +55,7 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
     protected void processEntity(Entity first, float deltaTime) {
         if (!firstMapper.has(first)) return;
 
-        Vector2 position = PositionComponent.mapper.get(first).position;
+        Vector3 position = PositionComponent.mapper.get(first).position;
         Vector2 velocity = VelocityComponent.mapper.get(first).velocity;
         Vector2 positionCorrection = new Vector2();
         Vector2 velocityCorrection = new Vector2(velocity);
@@ -70,7 +71,7 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
     }
 
     private void handleContact(Entity entity1, Entity entity2,
-                               Vector2 position, Vector2 velocity,
+                               Vector3 position, Vector2 velocity,
                                Vector2 correction) {
         Vector2 positionCorrection = new Vector2();
         Vector2 velocityCorrection = new Vector2();
@@ -91,7 +92,7 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
 
     private Polygon getCollisionBox(Entity entity,
                                     ComponentMapper<? extends CollisionBoxComponent> mapper) {
-        Vector2 position = PositionComponent.mapper.get(entity).position;
+        Vector3 position = PositionComponent.mapper.get(entity).position;
         Polygon collisionBox = mapper.get(entity).collisionBox;
         collisionBox = new Polygon(collisionBox.getTransformedVertices());
         collisionBox.translate(position.x, position.y);
@@ -109,7 +110,7 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
      * @param velocityCorrection of this specific collision
      */
     private void handleContact(Polygon polygon1, Polygon polygon2,
-                                  Vector2 position, Vector2 velocity, Vector2 correction,
+                                  Vector3 position, Vector2 velocity, Vector2 correction,
                                   Vector2 positionCorrection, Vector2 velocityCorrection) {
         Intersector.MinimumTranslationVector translation = new Intersector.MinimumTranslationVector();
         Intersector.overlapConvexPolygons(polygon1, polygon2, translation);
@@ -122,7 +123,7 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
                 translation.normal.x * difference,
                 translation.normal.y * difference
         );
-        position.add(positionCorrection);
+        position.add(positionCorrection.x, positionCorrection.y, 0);
 
         projection = velocity.dot(translation.normal);
         if (projection < 0) {
