@@ -33,9 +33,20 @@ public class LoadingContext extends ContextProxy {
         assetsToUnload = manager.getAssetNames();
         for (AssetDescriptor descriptor: descriptors) {
             if (manager.isLoaded(descriptor.fileName)) {
-                assetsToUnload.removeValue(descriptor.fileName, false);
+                removeDependency(manager, assetsToUnload, descriptor.fileName);
             } else {
                 manager.load(descriptor);
+            }
+        }
+    }
+
+    private void removeDependency(AssetManager manager, Array<String> assets, String asset) {
+        assets.removeValue(asset, false);
+
+        Array<String> dependencies = manager.getDependencies(asset);
+        if (dependencies != null) {
+            for (String dependency : dependencies) {
+                removeDependency(manager, assets, dependency);
             }
         }
     }
