@@ -60,10 +60,12 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
         Vector2 positionCorrection = new Vector2();
         Vector2 velocityCorrection = new Vector2(velocity);
 
+        Polygon box1 = getCollisionBox(first, firstMapper);
         for (Entity second: entities) {
             if (first == second || !secondMapper.has(second)) continue;
 
-            handleContact(first, second, position, velocity, positionCorrection);
+            Polygon box2 = getCollisionBox(second, secondMapper);
+            handleContact(first, second, box1, box2, position, velocity, positionCorrection);
         }
 
         velocityCorrection.sub(velocity);
@@ -71,13 +73,13 @@ public abstract class CollisionResolutionSystem extends IteratingSystem {
     }
 
     private void handleContact(Entity entity1, Entity entity2,
+                               Polygon box1, Polygon box2,
                                Vector3 position, Vector2 velocity,
                                Vector2 correction) {
         Vector2 positionCorrection = new Vector2();
         Vector2 velocityCorrection = new Vector2();
         handleContact(
-                getCollisionBox(entity1, firstMapper),
-                getCollisionBox(entity2, secondMapper),
+                box1, box2,
                 position, velocity, correction,
                 positionCorrection, velocityCorrection
         );
